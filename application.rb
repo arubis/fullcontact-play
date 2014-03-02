@@ -1,5 +1,6 @@
 require 'fullcontact'
 require 'dotenv'
+require 'sinatra'
 
 # grab the api key on testing (it's in heroku env on prod)
 Dotenv.load  # defaults to grabbing from .env, which is .gitignored
@@ -10,22 +11,38 @@ FullContact.configure do |config|
   puts "yeah man the api key is #{config.api_key}"
 end
 
-# test: input an email, output a photo URL
+# test: input an email, output name and pictures
 
-begin
-  person = FullContact.person(email: "nonsense@nowhere.example.com")
+get '/' do
+  "This would be a great place for an email form"
+end
 
+get '/:email' do
+  "Hello, world! Maybe someday I'll tell you about #{params[:email]}!"
+end
+
+def email_to_person(email)
+  begin
+    FullContact.person(email: email)
+  rescue
+    puts "Something went terribly wrong!"
+  end
+end
+
+def email_to_pictures(email)
+
+
+  # separate primary photo from secondaries
   secondaries = Array.new
-
-  # output primary photo URL (plus secondaries?)
   person.photos.each do |source|
     if source.is_primary?
-      puts source.url
+      primary = source.url
     else
       secondaries << source.url
     end
   end
 
-rescue
-  puts "Something went terribly wrong!"
+  # hand back some pictures to the caller
+  { primary: primary, secondaries: secondaries }
+
 end
