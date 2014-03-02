@@ -13,6 +13,8 @@ gem "bootstrap-sass"
 gem "foreman"
 gem "multi_json", "~>1.0"
 
+gem 'dotenv' # load environment variables from .env, does nothing on prod
+
 # i mean this is kind of the point of it all right?
 gem "fullcontact"
 
@@ -22,12 +24,6 @@ group :test, :development do
   gem 'rack-test'
   gem 'guard-rspec'
   gem 'spork'
-
-  # Figaro makes secure management of env variables
-  # easy. Plus it's cute! Mew!
-  gem 'figaro'
-  # Also Figaro pulls in the entire Rails framework OMGWTFBBQ!?!?!
-  # so maybe don't put it on production
 end
 
 group :test do
