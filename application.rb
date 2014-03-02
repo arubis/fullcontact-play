@@ -10,4 +10,16 @@ FullContact.configure do |config|
   puts "yeah man the api key is #{config.api_key}"
 end
 
+# test: input an email, output a photo URL
 
+begin
+  person = FullContact.person(email: "nonsense@nowhere.example.com")
+
+  # output primary photo URL (plus secondaries?)
+  person.photos.each do |source|
+    puts source.url if source.is_primary?
+  end
+
+rescue
+  puts "Something went terribly wrong!"
+end
