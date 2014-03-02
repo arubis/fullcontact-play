@@ -15,9 +15,15 @@ end
 begin
   person = FullContact.person(email: "nonsense@nowhere.example.com")
 
+  secondaries = Array.new
+
   # output primary photo URL (plus secondaries?)
   person.photos.each do |source|
-    puts source.url if source.is_primary?
+    if source.is_primary?
+      puts source.url
+    else
+      secondaries << source.url
+    end
   end
 
 rescue
