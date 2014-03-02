@@ -1,6 +1,5 @@
 .sass-cache
 .bundle
-Gemfile.lock
 
 # might check this in later if too lazy to gen statics
 css/       
