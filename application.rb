@@ -9,7 +9,7 @@ set :haml, :format => :html5, :layout => true
    # and can be redirected to another symbol for a different layout
    # or "false" for none
 
-@base_name = "About.ThisGuy: Personal Profiles for Whoever"
+base_name = "About.ThisGuy: Personal Profiles for Whoever"
 
 # grab the api key on testing (it's in heroku env on prod)
 Dotenv.load  # defaults to grabbing from .env, which is .gitignored
@@ -23,7 +23,7 @@ end
 # test: input an email, output name and pictures
 
 get '/' do
-  haml :landing, :locals => { title: "Fun with FullContact" }
+  haml :landing, :locals => { title: base_name }
 end
 
 get '/e' do
@@ -35,7 +35,7 @@ get '/e' do
   @pictures = { primary: @elements[:primary], secondaries: @elements[:secondaries] }
   @name = @elements[:name]
 
-  haml :bizcard, :locals => { title: "", email: @email, pictures: @pictures, name: @name }
+  haml :bizcard, :locals => { title: "#{@name} | #{base_name}", email: @email, pictures: @pictures, name: @name }
 end
 
 post '/e' do
@@ -45,6 +45,7 @@ post '/e' do
 end
 
 get '/nope' do
+  status 500
   @email = params[:e]
   "Couldn't find anything for #{@email}, sorry!"
 end
