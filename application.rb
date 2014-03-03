@@ -26,22 +26,42 @@ get '/' do
   haml :landing, :locals => { title: "Fun with FullContact" }
 end
 
-get '/email/:email' do
+get '/e' do
   # "Hello, world! Maybe someday I'll tell you about #{params[:email]}!"
-  haml :bizcard, :locals => { title: "Profile pictures for #{params[:email]}",
-                              pictures: email_to_pictures(params[:email])      }
+  # haml :bizcard, :locals => { title: "Profile pictures for #{params[:email]}",
+  #                             pictures: email_to_pictures(params[:email])      }
+  @email = params[:e]
+  @elements = email_to_elements(@email)
+  @pictures = { primary: @elements[:primary], secondaries: @elements[:secondaries] }
+  @name = @elements[:name]
+
+  haml :bizcard, :locals => { title: "", email: @email, pictures: @pictures, name: @name }
+end
+
+post '/e' do
+  @email = params[:e]
+  @pictures = email_to_elements(@email)
+  redirect 
+end
+
+get '/nope' do
+  @email = params[:e]
+  "Couldn't find anything for #{@email}, sorry!"
 end
 
 def email_to_person(email)
   begin
-    FullContact.person(email: email)
+    @person = FullContact.person(email: email)
   rescue
     puts "Something went terribly wrong!"
+    redirect to("/nope?e=#{email}")
   end
 end
 
-def email_to_pictures(email)
+def email_to_elements(email)
   person = email_to_person(email)
+
+  @fullname = person.contact_info.full_name
 
   @secondaries = Array.new
   person.photos.each do |source|
@@ -53,6 +73,6 @@ def email_to_pictures(email)
   end
 
   # hand back some pictures to the caller
-  { primary: @primary, secondaries: @secondaries }
+  { name: @fullname, primary: @primary, secondaries: @secondaries }
 
 end

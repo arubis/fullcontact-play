@@ -1,4 +1,13 @@
 .container
   .row
-    .col-md-6.col-md-offset-3
-      %h1 Put a name in here!
+    .col-md-8.col-md-offset-2
+      %h2= "Profile for #{email}"
+
+      #pictures.col-md-5.col-md-offset-1
+
+        %img.primary.img-rounded.img-responsive{:src => "#{@pictures[:primary]}" }
+
+        - @pictures[:secondaries][0..3].each do |picture|
+          %img.secondary.img-rounded.img-responsive{:src => "#{picture}" }
+      .col-md-5
+        %h3= @fullname

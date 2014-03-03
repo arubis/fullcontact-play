@@ -3,8 +3,8 @@
     .col-md-8.col-md-offset-2
       %h2 Who d'ya want?
 
-      %form{role: "form"}
+      %form{role: "form", action: "/e", method: "get"}
         .form-group
           %label{for: "emailInput"} Pound in an email address!
-          %input.form-control{type: "email", id: "emailInput", placeholder: "you@about.me"}
-        %button.btn.btn-submit{type: "submit"} Dig It
+          %input.form-control.input-lg{type: "email", id: "emailInput", name: "e", placeholder: "you@about.me"}
+        %button.btn.btn-primary.btn-lg{type: "submit"} Dig It
