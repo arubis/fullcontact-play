@@ -9,7 +9,7 @@ set :haml, :format => :html5, :layout => true
    # and can be redirected to another symbol for a different layout
    # or "false" for none
 
-base_name = "About.ThisGuy: Personal Profiles for Whoever"
+base_name = "AboutSomeGuy: Personal Profiles for Whoever"
 
 # grab the api key on testing (it's in heroku env on prod)
 Dotenv.load  # defaults to grabbing from .env, which is .gitignored
