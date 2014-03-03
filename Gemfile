@@ -4,6 +4,7 @@ source 'https://rubygems.org'
 gem "rack", '~>1.0'
 gem "thin"
 gem "sinatra"
+gem "sinatra-contrib"
 gem "kramdown"
 gem "haml"
 gem "sass"

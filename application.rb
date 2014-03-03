@@ -1,6 +1,13 @@
 require 'fullcontact'
 require 'dotenv'
 require 'sinatra'
+require 'sinatra/reloader' if development?
+
+# configure sinatra's rendering
+set :haml, :format => :html5, :layout => true
+   # n.b. :layout => true renders haml docs through layout.haml if it exists
+   # and can be redirected to another symbol for a different layout
+   # or "false" for none
 
 # grab the api key on testing (it's in heroku env on prod)
 Dotenv.load  # defaults to grabbing from .env, which is .gitignored
@@ -8,17 +15,19 @@ Dotenv.load  # defaults to grabbing from .env, which is .gitignored
 # Get FullContact ready
 FullContact.configure do |config|
   config.api_key = ENV['FULLCONTACT_API_KEY']
-  puts "yeah man the api key is #{config.api_key}"
+  puts "yeah man the api key is #{config.api_key}" # shows right up in the server logs
 end
 
 # test: input an email, output name and pictures
 
 get '/' do
-  "This would be a great place for an email form"
+  haml :main, :locals => { title: "Fun with FullContact" }
 end
 
-get '/:email' do
-  "Hello, world! Maybe someday I'll tell you about #{params[:email]}!"
+get '/email/:email' do
+  # "Hello, world! Maybe someday I'll tell you about #{params[:email]}!"
+  haml :bizcard, :locals => { title: "Profile pictures for #{params[:email]}",
+                              pictures: email_to_pictures(params[:email])      }
 end
 
 def email_to_person(email)
@@ -30,19 +39,18 @@ def email_to_person(email)
 end
 
 def email_to_pictures(email)
+  person = email_to_person(email)
 
-
-  # separate primary photo from secondaries
-  secondaries = Array.new
+  @secondaries = Array.new
   person.photos.each do |source|
     if source.is_primary?
-      primary = source.url
+      @primary = source.url
     else
-      secondaries << source.url
+      @secondaries << source.url
     end
   end
 
   # hand back some pictures to the caller
-  { primary: primary, secondaries: secondaries }
+  { primary: @primary, secondaries: @secondaries }
 
 end
