@@ -17,7 +17,7 @@ Dotenv.load  # defaults to grabbing from .env, which is .gitignored
 # Get FullContact ready
 FullContact.configure do |config|
   config.api_key = ENV['FULLCONTACT_API_KEY']
-  puts "yeah man the api key is #{config.api_key}" # shows right up in the server logs
+  # puts "yeah man the api key is #{config.api_key}" # shows right up in the server logs
 end
 
 # test: input an email, output name and pictures
